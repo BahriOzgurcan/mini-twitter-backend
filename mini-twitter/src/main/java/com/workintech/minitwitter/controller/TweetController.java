@@ -41,7 +41,6 @@ public class TweetController {
     }
 
     @PostMapping("/")
-    @Transactional
     public Tweet save(@RequestBody Tweet tweet){
         Tweet newTweet = tweet;
         newTweet.setCreatedAt(LocalDateTime.now());
@@ -49,14 +48,12 @@ public class TweetController {
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
     public ResponseEntity<?> delete(@PathVariable int id){
         tweetServiceImp.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    @Transactional
     public Tweet edit(@RequestBody Tweet tweet, @PathVariable int id){
         Tweet existingTweet = tweetServiceImp.findById(id);
         existingTweet.setContent(tweet.getContent());
@@ -65,7 +62,6 @@ public class TweetController {
     }
 
     @PostMapping("/like/{id}")
-    @Transactional
     public ResponseEntity<?> like(@PathVariable int id, @RequestBody LikeRequest likeRequest){
         try {
             Set<Member> likes = tweetServiceImp.saveLikes(likeRequest.memberId(), id);
@@ -76,7 +72,6 @@ public class TweetController {
     }
 
     @DeleteMapping("/like/{id}")
-    @Transactional
     public ResponseEntity<?> dislike(@PathVariable int id, @RequestBody LikeRequest likeRequest){
         try {
             Set<Member> likes = tweetServiceImp.deleteLikes(likeRequest.memberId(), id);
@@ -93,7 +88,6 @@ public class TweetController {
     }
 
     @PostMapping("/rt/{id}")
-    @Transactional
     public ResponseEntity<?> retweet(@PathVariable int id, @RequestBody ReTweetRequest reTweetRequest){
         try {
             Set<Member> retweets = tweetServiceImp.saveRetweets(reTweetRequest.memberId(), id);
@@ -104,7 +98,6 @@ public class TweetController {
     }
 
     @DeleteMapping("/rt/{id}")
-    @Transactional
     public ResponseEntity<?> deleteRetweet(@PathVariable int id, @RequestBody ReTweetRequest reTweetRequest){
         try {
             Set<Member> retweets = tweetServiceImp.deleteRetweets(reTweetRequest.memberId(), id);
